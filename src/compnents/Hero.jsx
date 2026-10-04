@@ -1,14 +1,33 @@
-export default function Hero() {
+ import business from '../data/business'
+ import { useState } from 'react';
+ function Hero() { 
+    const [searchBusiness,setSearchBusiness]=useState("");
+    const[filterdBusiness,setFilteredBusiness]= useState([]);
+ const handleSearch=()=>{
+   const filterDealers= business.filter((business)=>{
+    if(searchBusiness ==" " || searchBusiness === "" ){
+         setFilteredBusiness([]);
+    } else{
+         return business.name
+         .toLowerCase()
+         .includes(searchBusiness.trim().toLowerCase());
+    }
+        
+    });
+    setFilteredBusiness(filterDealers);
+ }
+   
+    
     return (
-         
-            <section className='w-full max-w-7xl mx-auto my-4 px-6 py-10 rounded-2xl bg-gradient-to-r from-violet-700 via-purple-700 to-indigo-600 flex flex-col md:flex-row'>
+         <>
+         <section className='w-full max-w-7xl mx-auto my-4 px-6 py-10 rounded-2xl bg-gradient-to-r from-violet-700 via-purple-700 to-indigo-600 flex flex-col md:flex-row'>
                 <div className=' w-full md:w-1/2 flex flex-col justify-center gap-5 py-6'>
                     <h1 className='text-4xl md:text-5xl font-bold text-white'> Find nearby <br/> businesses & Products</h1>
 
                     <p className="text-white text-lg"> Search trusted dealers and shop the best products.</p>
                     <div className="flex flex-col sm:flex-row gap-2">
-                           <input className='bg-white px-4 py-3 rounded-lg outline-none flex-1' type="text" placeholder=" Search Vendor Name.."/>
-                            <button className=' bg-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-200' type='button'>Search</button>
+                           <input onChange={(e)=> setSearchBusiness(e.target.value)} value={searchBusiness} className='bg-white px-4 py-3 rounded-lg outline-none flex-1' type="text" placeholder=" Search Vendor Name.."/>
+                            <button className=' bg-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-200' type='button' onClick={handleSearch}>Search</button>
                             <button className='bg-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-200' type='button'>Scan QR</button>
                     </div>
                 </div>
@@ -17,8 +36,19 @@ export default function Hero() {
                     <span  className="text-gray-500">Store Image</span>
                     </div> 
                 </div>
+              
             </section>
-
+              {filterdBusiness.map((e)=>{ 
+                    return(<div key={e.id}>
+                   <p>{e.name}</p>
+                   <p>{e.category}</p>
+                  </div>);
+                    }
+                )}
          
+         </>
+            
     )
 }
+
+export default Hero;
